@@ -1,0 +1,110 @@
+import mysql.connector
+
+def conectar():
+  mydb = mysql.connector.connect(
+    host="brasilsql.c4uounu9vuo1.us-east-1.rds.amazonaws.com",
+    user="admin",
+    password="12345678",
+    database="brasil"
+  )
+  return mydb
+  
+
+def listar(conn, cursor):
+    # Abrir uma conexão com o banco de dados
+    conn = conectar()
+
+    # Criando um objeto cursor para executar as consultas SQL
+    cursor = conn.cursor()
+
+    # Executar a consulta SQL para listar os registros
+    cursor.execute("SELECT * FROM tribos")
+
+    # Obter os resultados
+    resultados = cursor.fetchall()
+
+    # Imprimir os resultados
+    for resultado in resultados:
+        print(resultado)
+
+    # Fechar a conexão e o cursor
+    cursor.close()
+    conn.close()
+    
+    
+    #Atualize um de cada vez, mude o atributo apos codigo
+def atualizar(n_tribo, novo_nome):
+    # Abrir uma conexão com o banco de dados
+    conn = conectar()
+
+    # Criando um objeto cursor para executar as consultas SQL
+    cursor = conn.cursor()
+
+    # Executar a consulta SQL para atualizar o registro
+    sql = "UPDATE tribos SET nome = %s WHERE n_tribo = %s"
+    val = (novo_nome, n_tribo)
+    cursor.execute(sql, val)
+
+    # Commit da transação
+    conn.commit()
+
+    # Verificar se algum registro foi atualizado
+    if cursor.rowcount == 0:
+        print("Nenhum registro atualizado.")
+    else:
+        print("Registro atualizado com sucesso.")
+
+    # Fechar a conexão e o cursor
+    cursor.close()
+    conn.close()
+    
+    
+
+def inserir(n_tribo, nome, habit, renda, esco, trab):
+    # Abrir uma conexão com o banco de dados
+    conn = conectar()
+
+    # Criando um objeto cursor para executar as consultas SQL
+    cursor = conn.cursor()
+
+    # Executar a consulta SQL para inserir um novo registro
+    sql = "INSERT INTO tribos (n_tribo, nome, habit, renda, esco, trab) VALUES (%s, %s, %s, %s, %s, %s)"
+    val = (n_tribo, nome, habit, renda, esco, trab)
+    cursor.execute(sql, val)
+
+    # Commit da transação
+    conn.commit()
+
+    # Imprimir mensagem de sucesso
+    print("Registro inserido com sucesso.")
+
+    # Fechar a conexão e o cursor
+    cursor.close()
+    conn.close()
+    
+  
+def deletar(n_tribo):
+    # Abrir uma conexão com o banco de dados
+    conn = conectar()
+
+    # Criando um objeto cursor para executar as consultas SQL
+    cursor = conn.cursor()
+
+    # Executar a consulta SQL para deletar o registro
+    sql = "DELETE FROM tribos WHERE n_tribo = %s"
+    val = (n_tribo,)
+    cursor.execute(sql, val)
+
+    # Commit da transação
+    conn.commit()
+
+    # Verificar se algum registro foi deletado
+    if cursor.rowcount == 0:
+        print("Nenhum registro deletado.")
+    else:
+        print("Registro deletado com sucesso.")
+
+    # Fechar a conexão e o cursor
+    cursor.close()
+    conn.close()
+    

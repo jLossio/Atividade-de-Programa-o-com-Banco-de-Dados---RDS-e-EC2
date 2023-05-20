@@ -1,0 +1,54 @@
+# chama todas as funções
+from funcoes import conectar, listar, atualizar, inserir, deletar;
+
+
+
+conn = conectar()
+# Criando um objeto cursor para executar as consultas SQL
+cursor = conn.cursor()
+while True:
+  # Mostra as opções de operação
+  print("O que você deseja fazer?")
+  print("1 - Listar estados")
+  print("2 - Inserir nova tribo")
+  print("3 - Atualizar um estado")
+  print("4 - Deletar um estado")
+  print("0 - Sair")
+  
+  opcao = int(input("Digite o número da opção desejada: "))
+
+  if opcao == 1:
+    # Listar estados
+    listar(conn, cursor)
+  
+  elif opcao == 2:
+    # Inserir novo estado
+    n_tribo = int(input("Digite o código da nova tribo: "))
+    nome = input("Digite o nome da nova tribo: ")
+    habit = int(input("Digite o numero de habitantes da nova tribo: "))
+    renda = int(input("Digite a renda da nova tribo: "))
+    esco = input("Digite a escolaridade da tribo: ")
+    trab = input("Digite sim ou não se eles tem trabalho remunerado: ")
+    inserir(n_tribo, nome, habit, renda, esco, trab)
+
+  elif opcao == 3:
+    # Atualizar um estado
+    n_tribo = int(input("Digite o código da tribo que deseja atualizar: "))
+    nome = input("Digite o novo nome da tribo: ")
+    atualizar(n_tribo, nome)
+
+  elif opcao == 4:
+    # Deletar um estado
+    n_tribo = int(input("Digite o código do estado que deseja deletar: "))
+    deletar(n_tribo)
+
+  elif opcao == 0:
+    # Sair do programa
+    break
+
+  else:
+    print("Opção inválida. Digite novamente.")
+    
+# Fechar a conexão e o cursor
+cursor.close()
+conn.close()
